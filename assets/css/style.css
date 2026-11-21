@@ -436,46 +436,73 @@ section[id]{scroll-margin-top:84px;}
   gap:clamp(34px,6vw,84px);
   align-items:center;
 }
-.story__frame{
-  position:relative;
-  aspect-ratio:4/5;
-  background:linear-gradient(155deg,#f3e8dc 0%,#ead7c2 42%,#d6b690 100%);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+/* Update the frame to handle the image */
+.story__frame {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: var(--choco-900); /* Fallback color */
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
-.story__frame::before{
-  content:'';
-  position:absolute;
-  inset:14px;
-  border:1px solid rgba(253,252,247,.6);
-  pointer-events:none;
+
+/* NEW: Make the image fill the frame */
+.story__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
-.story__frame::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(110% 80% at 25% 15%,rgba(255,255,255,.45),transparent 62%);
-  pointer-events:none;
+
+/* Update the inner border so it sits ON TOP of the image */
+.story__frame::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(253, 252, 247, 0.6);
+  pointer-events: none;
+  z-index: 3; /* Ensures border is above the photo */
 }
-.story__monogram{
-  position:relative;
-  z-index:2;
-  font-family:var(--serif);
-  font-size:clamp(2.8rem,7vw,4.6rem);
-  letter-spacing:.08em;
-  color:rgba(84,61,49,.55);
+
+/* Add a dark gradient overlay at the bottom so the monogram pops */
+.story__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(25, 19, 16, 0.8) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
 }
-.story__monogram span{font-style:italic;color:rgba(84,61,49,.38);}
-.story__frame .sprig{
-  position:absolute;
-  bottom:-80px;
-  right:-60px;
-  width:180px;
-  height:380px;
-  color:rgba(84,61,49,.16);
-  transform:rotate(-14deg);
-  pointer-events:none;
+
+/* Update the monogram to be white/gold and sit above the image */
+.story__monogram {
+  position: relative;
+  z-index: 2;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 4.6rem);
+  letter-spacing: .08em;
+  color: #fdfcf7; /* White text */
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Shadow to ensure visibility */
+}
+
+.story__monogram span {
+  font-style: italic;
+  color: var(--gold); /* Gold ampersand */
+}
+
+/* Make sure the sprig overlay sits above the image but below the text */
+.story__frame .sprig {
+  position: absolute;
+  bottom: -80px;
+  right: -60px;
+  width: 180px;
+  height: 380px;
+  color: rgba(253, 252, 247, 0.2); /* Lightened so it shows against the photo */
+  transform: rotate(-14deg);
+  pointer-events: none;
+  z-index: 2; 
 }
 
 .story__body{max-width:520px;}
@@ -634,6 +661,7 @@ section[id]{scroll-margin-top:84px;}
   display:grid;
   place-items:center;
   transition:transform .7s var(--ease),box-shadow .7s var(--ease);
+  background: var(--choco-900); /* Fallback color while image loads */
 }
 .gallery__item::after{
   content:'';
@@ -650,20 +678,13 @@ section[id]{scroll-margin-top:84px;}
   position:absolute;
   left:22px;
   bottom:18px;
-  z-index:2;
+  z-index:2; /* Keeps text above the image */
   font-family:var(--serif);
   font-style:italic;
   font-size:1.05rem;
   color:rgba(253,252,247,.92);
   letter-spacing:.02em;
 }
-.gallery__item--a{background:linear-gradient(150deg,#ead7c2,#d6b690 60%,#c4a784);}
-.gallery__item--b{background:linear-gradient(210deg,#f3e8dc,#e0c6a9 55%,#bbafa9);}
-.gallery__item--c{background:linear-gradient(170deg,#e3dedc,#d6b690 50%,#8f7a62);}
-.gallery__item--d{background:linear-gradient(200deg,#f6f4dc,#eccfad 55%,#c4a784);}
-.gallery__item--e{background:linear-gradient(160deg,#d6b690,#a0896d 55%,#543d31);}
-.gallery__item--f{background:linear-gradient(190deg,#f9f3ed,#e7d2ba 50%,#bbafa9);}
-
 .gallery__item .gallery__mono{
   font-family:var(--serif);
   font-size:clamp(2rem,4vw,3rem);
@@ -671,6 +692,20 @@ section[id]{scroll-margin-top:84px;}
   letter-spacing:.1em;
   position:relative;
   z-index:1;
+
+}
+.gallery__item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform .7s var(--ease);
+}
+
+.gallery__item:hover img {
+  transform: scale(1.05); /* Gives a nice zoom effect on hover */
 }
 
 /* ============================================================
@@ -1573,4 +1608,249 @@ section[id]{scroll-margin-top:84px;}
 }
 [data-theme="dark"] .dashboard-table-wrapper div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb {
   background: var(--tan-600);
+}
+/* ============================================================
+   STORY EXPANDER
+   ============================================================ */
+.story__more {
+  position: relative;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.8s cubic-bezier(0.22, 0.68, 0.28, 1);
+  opacity: 0;
+}
+
+/* The fade-out overlay for the truncated text */
+.story__more::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--beige-50));
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+[data-theme="dark"] .story__more::before {
+  background: linear-gradient(to bottom, transparent, #191310);
+}
+
+/* When the container is expanded */
+.story__more.is-expanded {
+  max-height: 2000px; /* Large enough to fit the text */
+  opacity: 1;
+}
+
+.story__more.is-expanded::before {
+  opacity: 0; /* Hide the fade effect */
+}
+
+/* The Read More Button */
+.btn--read-more {
+  margin-top: 10px;
+  padding: 10px 24px;
+  font-size: 0.65rem;
+  border-color: var(--tan-400);
+  color: var(--choco);
+}
+.btn--read-more:hover {
+  background: var(--tan-100);
+  color: var(--choco);
+}
+
+/* Ensure the paragraphs in the hidden section have spacing */
+.story__more p {
+  margin-bottom: 18px;
+}
+/* ============================================================
+   FULL STORY PAGE (our_story.html)
+   ============================================================ */
+.story-article {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--choco-400);
+}
+
+.story-article p {
+  margin-bottom: 24px;
+}
+
+/* Elegant Drop Cap for the first letter */
+.drop-cap::first-letter {
+  font-family: var(--serif);
+  font-size: 4.5rem;
+  float: left;
+  line-height: 0.8;
+  margin-right: 12px;
+  margin-top: 8px;
+  color: var(--tan-600);
+}
+
+/* Photo Frames inside the article */
+.story-article__figure {
+  margin: 48px 0;
+  padding: 12px;
+  background: var(--beige-100);
+  border: 1px solid var(--beige-300);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px -15px rgba(84, 61, 49, 0.15);
+}
+
+[data-theme="dark"] .story-article__figure {
+  background: var(--choco-800);
+  border-color: var(--choco-600);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.5);
+}
+
+.story-article__figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
+.story-article__figure figcaption {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--tan-600);
+  margin-top: 16px;
+  padding: 0 10px;
+}
+/* ============================================================
+   REGISTRY: BANK ACCOUNT CARDS
+   ============================================================ */
+.bank-accounts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bank-currency-title {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--choco-600);
+  border-bottom: 1px solid var(--beige-300);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+[data-theme="dark"] .bank-currency-title {
+  color: var(--tan-400);
+  border-bottom-color: var(--choco-600);
+}
+
+.bank-card {
+  background: var(--beige-50);
+  border: 1px solid var(--beige-300);
+  border-radius: 6px;
+  padding: 20px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.bank-card:hover {
+  border-color: var(--tan-400);
+  box-shadow: 0 4px 12px rgba(84, 61, 49, 0.05);
+}
+[data-theme="dark"] .bank-card {
+  background: var(--choco-800);
+  border-color: var(--choco-600);
+}
+[data-theme="dark"] .bank-card:hover {
+  border-color: var(--tan-600);
+}
+
+.bank-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(143, 122, 98, 0.3);
+}
+.bank-name {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--choco);
+}
+[data-theme="dark"] .bank-name {
+  color: var(--beige-200);
+}
+
+.bank-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.bank-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.bank-label {
+  color: var(--choco-400);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+[data-theme="dark"] .bank-label {
+  color: var(--choco-200);
+}
+
+.bank-value {
+  color: var(--choco-900);
+  font-weight: 400;
+  text-align: right;
+}
+[data-theme="dark"] .bank-value {
+  color: var(--beige-100);
+}
+
+.bank-number {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.bank-copy-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--tan-400);
+  color: var(--tan-600);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.copy-btn:hover {
+  background: var(--tan-100);
+  color: var(--choco);
+}
+[data-theme="dark"] .copy-btn {
+  border-color: var(--choco-400);
+  color: var(--tan-400);
+}
+[data-theme="dark"] .copy-btn:hover {
+  background: var(--choco-600);
+  color: var(--beige-100);
+}
+
+.copy-btn.is-copied {
+  background: #25D366; /* WhatsApp green for success */
+  border-color: #25D366;
+  color: white;
 }

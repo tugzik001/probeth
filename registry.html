@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gift Registry — Bethel &amp; Promise</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body class="admin-body">
 
   <!-- ===================== FIXED FLOATING NAVIGATION ===================== -->
+  <!-- ===================== NAVIGATION ===================== -->
   <header class="nav is-scrolled" style="top: 20px; padding: 0;">
     <div class="nav__inner" style="border-radius: 100px;">
       <a href="index.html" class="nav__brand" aria-label="Back home">
@@ -20,21 +21,37 @@
       
       <div style="display: flex; align-items: center; gap: 20px;">
         <nav class="nav__links" aria-label="Primary">
-          <a href="index.html#story">Our Story</a>
+          <a href="index.html#story" style="color: var(--tan-600);">Our Story</a>
           <a href="index.html#details">The Day</a>
           <a href="index.html#schedule">Schedule</a>
           <a href="index.html#gallery">Gallery</a>
-          <a href="registry.html" style="color: var(--choco);">Registry</a>
+          <a href="registry.html">Registry</a>
           <a href="index.html#rsvp" class="nav__cta">RSVP</a>
         </nav>
 
         <button id="themeToggle" class="theme-btn" aria-label="Toggle dark mode">
-          <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
+
+      <!-- MISSING PIECE 1: The Hamburger Button -->
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <!-- MISSING PIECE 2: The Mobile Menu Drawer -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="index.html#story">Our Story</a>
+    <a href="index.html#details">The Day</a>
+    <a href="index.html#schedule">Schedule</a>
+    <a href="index.html#gallery">Gallery</a>
+    <a href="registry.html">Registry</a>
+    <div class="mobile-menu__rule"></div>
+    <a href="index.html#rsvp">RSVP</a>
+  </div>
 
   <!-- ===================== MAIN REGISTRY CONTENT WORKSPACE ===================== -->
   <main class="admin-main" style="display: block; width: 100%; padding-top: 140px;">
@@ -49,15 +66,29 @@
         </p>
       </div>
 
-      <!-- TWO-COLUMN WORKSPACE: STORES & CASH CONTRIBUTIONS -->
+           <!-- TWO-COLUMN WORKSPACE: STORES & CASH CONTRIBUTIONS -->
       <div class="details__grid" style="grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 32px;">
         
         <!-- MODULE CARD 1: Digital Curated Stores -->
-        <article class="detail-card reveal in" style="text-align: left; padding: 40px 32px;">
-          <div class="detail-card__icon" style="margin: 0 0 16px 0;">🎁</div>
-          <h3 style="font-size: 1.6rem; margin-bottom: 8px;">Curated Registries</h3>
-          <p style="font-size: 0.9rem; margin-bottom: 24px; color: var(--choco-400);">Select items directly from our cloud-managed gift storefronts below.</p>
+                <!-- MODULE CARD 1: Digital Curated Stores -->
+        <article class="detail-card reveal in" style="text-align: left; padding: 40px 32px; display: flex; flex-direction: column;">
           
+          <!-- Top Section -->
+          <div>
+            <div class="detail-card__icon" style="margin: 0 0 16px 0;">🎁</div>
+            <h3 style="font-size: 1.6rem; margin-bottom: 8px;">Curated Registries</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 24px; color: var(--choco-400);">Select items directly from our cloud-managed gift storefronts below.</p>
+          </div>
+
+          <!-- Center Decoration: Quote & Divider -->
+          <div style="margin: auto 0; text-align: center; padding: 20px 0;">
+            <div class="divider" style="margin: 0 auto 16px;"><span></span><i></i><span></span></div>
+            <p style="font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--tan-600); line-height: 1.5; max-width: 250px; margin: 0 auto;">
+              "Your presence is our greatest present."
+            </p>
+          </div>
+
+          <!-- Bottom Section: Links -->
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <a href="https://temu.com" target="_blank" rel="noopener" class="registry-store-row">
               <div>
@@ -75,27 +106,92 @@
               <span class="store-arrow">&rarr;</span>
             </a>
           </div>
+
         </article>
 
         <!-- MODULE CARD 2: Traditional Bank Wire Transfers -->
-        <article class="detail-card reveal in" style="text-align: left; padding: 40px 32px; --d: 0.08s;">
+        <article class="detail-card reveal in" style="text-align: left; padding: 40px 32px; --d: 0.08s; display: flex; flex-direction: column;">
           <div class="detail-card__icon" style="margin: 0 0 16px 0;">🏦</div>
           <h3 style="font-size: 1.6rem; margin-bottom: 8px;">Direct Cash Transfers</h3>
-          <p style="font-size: 0.9rem; margin-bottom: 24px; color: var(--choco-400);">For cash contributions towards our new home foundation, cash wires can be securely routed below.</p>
+          <p style="font-size: 0.9rem; margin-bottom: 24px; color: var(--choco-400);">
+            For cash contributions towards our new home foundation, transfers can be routed below.</p>
           
-          <div class="bank-account-box">
-            <div class="bank-field">
-              <span class="bank-label">Bank Name</span>
-              <span class="bank-value">GTBank (Guaranty Trust Bank)</span>
+          <div class="bank-accounts-container">
+            
+            <!-- NAIRA HEADER -->
+            <div class="bank-currency-title">🇳🇬 Naira Accounts</div>
+            
+            <!-- FCMB -->
+            <div class="bank-card">
+              <div class="bank-header">
+                <span class="bank-name">FCMB</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Name</span>
+                <span class="bank-value">Promise Ifeanyi Okafor</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Number</span>
+                <div class="bank-copy-wrap">
+                  <span class="bank-value bank-number">6700872272</span>
+                  <button class="copy-btn" data-clipboard="6700872272">Copy</button>
+                </div>
+              </div>
             </div>
-            <div class="bank-field">
-              <span class="bank-label">Account Number</span>
-              <span class="bank-value" style="font-family: var(--serif); font-size: 1.25rem; letter-spacing: 0.05em; font-weight: 500;">0123456789</span>
+
+            <!-- MONIEPOINT -->
+            <div class="bank-card">
+              <div class="bank-header">
+                <span class="bank-name">Moniepoint</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Name</span>
+                <span class="bank-value">OKAFOR PROMISE</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Number</span>
+                <div class="bank-copy-wrap">
+                  <span class="bank-value bank-number">8147041064</span>
+                  <button class="copy-btn" data-clipboard="8147041064">Copy</button>
+                </div>
+              </div>
             </div>
-            <div class="bank-field">
-              <span class="bank-label">Account Name</span>
-              <span class="bank-value" style="text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.03em;">Bethel &amp; Promise Wedding Fund</span>
+
+            <!-- USD HEADER -->
+            <div class="bank-currency-title" style="margin-top: 32px;">🇺🇸 USD Account</div>
+            
+            <!-- LEAD BANK -->
+            <div class="bank-card">
+              <div class="bank-header">
+                <span class="bank-name">Lead Bank</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Number</span>
+                <div class="bank-copy-wrap">
+                  <span class="bank-value bank-number">218426847422</span>
+                  <button class="copy-btn" data-clipboard="218426847422">Copy</button>
+                </div>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Type</span>
+                <span class="bank-value">Checking</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">ACH Routing</span>
+                <div class="bank-copy-wrap">
+                  <span class="bank-value">101019644</span>
+                  <button class="copy-btn" data-clipboard="101019644">Copy</button>
+                </div>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Wire Routing</span>
+                <div class="bank-copy-wrap">
+                  <span class="bank-value">101019644</span>
+                  <button class="copy-btn" data-clipboard="101019644">Copy</button>
+                </div>
+              </div>
             </div>
+
           </div>
         </article>
 
@@ -113,6 +209,36 @@
       <p class="footer__copy" style="margin: 0;">Made with love &middot; All rights reserved. #ProBett2026</p>
     </div>
   </footer>
+
+  <!-- Copy to Clipboard Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const copyButtons = document.querySelectorAll('.copy-btn');
+
+      copyButtons.forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const textToCopy = btn.getAttribute('data-clipboard');
+          try {
+            await navigator.clipboard.writeText(textToCopy);
+            
+            // Visual feedback
+            const originalText = btn.innerText;
+            btn.innerText = 'Copied!';
+            btn.classList.add('is-copied');
+            
+            setTimeout(() => {
+              btn.innerText = originalText;
+              btn.classList.remove('is-copied');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy text: ', err);
+            // Fallback for older browsers
+            btn.innerText = 'Press Ctrl+C';
+          }
+        });
+      });
+    });
+  </script>
 
   <script src="assets/js/main.js"></script>
 </body>
