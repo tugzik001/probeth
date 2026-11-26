@@ -1,4 +1,4 @@
-probett/
+probeth/
 │
 ├── index.html            # Public Home, Countdown & Event Overview
 ├── registry.html         # Gift Registry & Bank Transfer Details
